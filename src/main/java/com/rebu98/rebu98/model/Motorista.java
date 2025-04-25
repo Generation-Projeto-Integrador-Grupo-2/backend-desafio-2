@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -21,22 +22,33 @@ public class Motorista {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank(message = "Informações sobre o CNH é obrigatório!")
 	@Size(min = 3, max = 100, message = "Atributo tem que ter no mínimo 3 caracteres")
 	private String cnh;
-	
+
 	@NotBlank(message = "Informações sobre o Modelo de Carro é obrigatório!")
 	@Size(min = 3, max = 100, message = "Atributo tem que ter no mínimo 3 caracteres")
-    private String modeloCarro;
-	
+	private String modeloCarro;
+
 	@NotBlank(message = "Informações sobre a Placa é obrigatório!")
 	@Size(min = 3, max = 100, message = "Atributo tem que ter no mínimo 3 caracteres")
-    private String placa;
-	
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "motorista", cascade = CascadeType.REMOVE)
+	private String placa;
+
+	@OneToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "motorista", cascade = CascadeType.REMOVE)
+	private List<Corrida> corridas;
+
+	public List<Corrida> getCorridas() {
+		return corridas;
+	}
+
+	public void setCorridas(List<Corrida> corridas) {
+		this.corridas = corridas;
+	}
 
 	public Long getId() {
 		return id;

@@ -42,7 +42,7 @@ public class Usuario {
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Motorista motorista;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "passageiro", cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
     private List<Corrida> corridasComoPassageiro;
 
     public Long getId() {

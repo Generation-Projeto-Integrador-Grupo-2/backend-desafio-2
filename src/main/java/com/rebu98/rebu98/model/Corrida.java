@@ -22,37 +22,37 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "tb_corridas")
 public class Corrida {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank(message = "É obrigatório inserir a origem!")
 	@Size(min = 5, max = 100)
 	private String origem;
-	
+
 	@NotBlank(message = "É obrigatório inserir um destino!")
 	@Size(min = 5, max = 100)
 	private String destino;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
-	@NotNull
-	@Positive
+	@NotNull(message = "É obrigatório inserir um preço!")
+	@Positive(message = "O preço precisa ser maior maior que 0.")
 	private BigDecimal preco;
-	
+
 	@UpdateTimestamp
 	private LocalDateTime horario;
-	
-	@NotNull
+
+	@NotNull(message = "Insira a velocidade média do veículo durante a viagem")
 	private double velocidadeMedia;
-	
+
 	@NotNull
 	private double distanciaKm;
-	
+
 	@ManyToOne
-	@JsonIgnoreProperties("usuario")
+	@JsonIgnoreProperties("corridasComoPassageiro")
 	private Usuario usuario;
-	
+
 	@ManyToOne
 	@JsonIgnoreProperties("motorista")
 	private Motorista motorista;
@@ -128,5 +128,5 @@ public class Corrida {
 	public void setMotorista(Motorista motorista) {
 		this.motorista = motorista;
 	}
-	
+
 }
