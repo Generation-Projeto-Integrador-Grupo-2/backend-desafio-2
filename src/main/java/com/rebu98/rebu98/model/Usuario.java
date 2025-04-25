@@ -5,6 +5,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,7 +42,7 @@ public class Usuario {
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Motorista motorista;
 
-    @OneToMany(mappedBy = "passageiro")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "passageiro", cascade = CascadeType.REMOVE)
     private List<Corrida> corridasComoPassageiro;
 
     public Long getId() {
