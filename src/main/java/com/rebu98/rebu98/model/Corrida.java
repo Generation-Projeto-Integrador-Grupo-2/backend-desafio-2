@@ -31,7 +31,7 @@ public class Corrida {
 	@Size(min = 5, max = 100)
 	private String origem;
 	
-	@NotBlank(message = "É obrigatório inserir o destino!")
+	@NotBlank(message = "É obrigatório inserir um destino!")
 	@Size(min = 5, max = 100)
 	private String destino;
 	
