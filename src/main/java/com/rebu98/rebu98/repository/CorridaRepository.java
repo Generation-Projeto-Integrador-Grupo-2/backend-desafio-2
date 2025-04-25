@@ -7,8 +7,8 @@ import com.rebu98.rebu98.model.Corrida;
 
 @Repository
 public interface CorridaRepository extends JpaRepository<Corrida, Long> {
-	
-	public List<Corrida> findByUsuario(Long usuarioId);
 
-    public List<Corrida> findByMotorista(Long motoristaId);
+    public List<Corrida> findByUsuarioId(Long usuarioId);
+
+    public List<Corrida> findByMotoristaId(Long motoristaId);
 }

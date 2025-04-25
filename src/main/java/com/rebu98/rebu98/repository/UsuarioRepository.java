@@ -7,7 +7,7 @@ import com.rebu98.rebu98.model.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    public Optional<Usuario> findByUsuario(String usuario);
+    public Optional<Usuario> findByNome(String nome);
 
     public Optional<Usuario> findByEmail(String email);
 }

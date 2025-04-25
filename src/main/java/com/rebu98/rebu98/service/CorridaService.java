@@ -22,14 +22,14 @@ public class CorridaService {
 	public Optional<Corrida> buscarPorId(Long id) {
 		return corridaRepository.findById(id);
 	}
-	
+
 	public List<Corrida> buscarCorridasPorUsuario(Long usuarioId) {
-        return corridaRepository.findByUsuario(usuarioId);
-    }
-	
+		return corridaRepository.findByUsuarioId(usuarioId);
+	}
+
 	public List<Corrida> buscarCorridasPorMotorista(Long motoristaId) {
-        return corridaRepository.findByMotorista(motoristaId);
-    }
+		return corridaRepository.findByMotoristaId(motoristaId);
+	}
 
 	public List<Corrida> listarCorridas() {
 		return corridaRepository.findAll();
