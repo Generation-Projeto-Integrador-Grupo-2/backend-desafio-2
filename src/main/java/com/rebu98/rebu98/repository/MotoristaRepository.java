@@ -11,7 +11,7 @@ public interface MotoristaRepository extends JpaRepository<Motorista, Long> {
 
 	public List<Motorista> findAllByCnhContainingIgnoreCase(@Param("cnh") String cnh);
 	
-	public List<Motorista> findAllByModeloCarroContainingIgnoreCase(@Param("modeloCarro") String modeloCarro);
+	public List<Motorista> findAllBymodeloCarroContainingIgnoreCase(@Param("modeloCarro") String modeloCarro);
 	
 	public List<Motorista> findAllByPlacaContainingIgnoreCase(@Param("placa") String placa);
 }

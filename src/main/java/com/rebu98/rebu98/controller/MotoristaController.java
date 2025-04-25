@@ -48,8 +48,8 @@ public class MotoristaController {
 	}
 
 	@GetMapping("/modeloCarro/{modeloCarro}")
-	public ResponseEntity<List<Motorista>> getByModeloCarro(@PathVariable String modeloCarro) {
-		return ResponseEntity.ok(motoristaRepository.findAllByModeloCarroContainingIgnoreCase(modeloCarro));
+	public ResponseEntity<List<Motorista>> getBymodeloCarro(@PathVariable String modeloCarro) {
+		return ResponseEntity.ok(motoristaRepository.findAllBymodeloCarroContainingIgnoreCase(modeloCarro));
 	}
 
 	@GetMapping("/placa/{placa}")
