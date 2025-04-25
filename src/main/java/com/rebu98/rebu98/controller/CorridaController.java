@@ -46,13 +46,15 @@ public class CorridaController {
 	}
 
 	@GetMapping("/motorista/{motoristaid}")
-	public ResponseEntity<List<Corrida>> buscarCorridasPorMotorista(@PathVariable Long motoristaId) {
+	public ResponseEntity<List<Corrida>> buscarCorridasPorMotorista(
+			@PathVariable Long motoristaId) {
 		return ResponseEntity.ok(corridaService.buscarCorridasPorMotorista(motoristaId));
 	}
 
 	@PostMapping
 	public ResponseEntity<Corrida> post(@Valid @RequestBody Corrida corrida) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(corridaService.cadastrarCorrida(corrida));
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(corridaService.cadastrarCorrida(corrida));
 	}
 
 	@PutMapping

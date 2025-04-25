@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/motorista")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@PreAuthorize("hasRole('MOTORISTA')")
 public class MotoristaController {
 
 	@Autowired
@@ -49,7 +51,8 @@ public class MotoristaController {
 
 	@GetMapping("/modeloCarro/{modeloCarro}")
 	public ResponseEntity<List<Motorista>> getBymodeloCarro(@PathVariable String modeloCarro) {
-		return ResponseEntity.ok(motoristaRepository.findAllBymodeloCarroContainingIgnoreCase(modeloCarro));
+		return ResponseEntity
+				.ok(motoristaRepository.findAllBymodeloCarroContainingIgnoreCase(modeloCarro));
 	}
 
 	@GetMapping("/placa/{placa}")
@@ -65,7 +68,8 @@ public class MotoristaController {
 	@PutMapping
 	public ResponseEntity<Motorista> put(@Valid @RequestBody Motorista motorista) {
 		return motoristaRepository.findById(motorista.getId())
-				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(motoristaRepository.save(motorista)))
+				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED)
+						.body(motoristaRepository.save(motorista)))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
