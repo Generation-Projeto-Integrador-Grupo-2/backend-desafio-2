@@ -24,11 +24,11 @@ public class CorridaService {
 	}
 	
 	public List<Corrida> buscarCorridasPorUsuario(Long usuarioId) {
-        return corridaRepository.findByUsuarioId(usuarioId);
+        return corridaRepository.findByUsuario(usuarioId);
     }
 	
 	public List<Corrida> buscarCorridasPorMotorista(Long motoristaId) {
-        return corridaRepository.findByMotoristaId(motoristaId);
+        return corridaRepository.findByMotorista(motoristaId);
     }
 
 	public List<Corrida> listarCorridas() {
