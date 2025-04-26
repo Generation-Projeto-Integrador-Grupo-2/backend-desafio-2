@@ -61,12 +61,27 @@ public class CorridaService {
 	public CalculoTempoCorridaDTO calcularTempoCorrida(Corrida corrida) {
 
 		double tempoDeViagemHoras = corrida.getDistanciaKm() / corrida.getVelocidadeMedia();
-
 		long tempoDeViagemMinutos = (long) (tempoDeViagemHoras * 60);
+
+		String tempoDeViagemFormatado;
+
+		if (tempoDeViagemMinutos < 60) {
+			tempoDeViagemFormatado = tempoDeViagemMinutos + " minutos";
+		} else {
+			long horas = tempoDeViagemMinutos / 60;
+			long minutosRestantes = tempoDeViagemMinutos % 60;
+
+			if (minutosRestantes == 0) {
+				tempoDeViagemFormatado = horas + (horas == 1 ? " hora" : " horas");
+			} else {
+				tempoDeViagemFormatado = horas + (horas == 1 ? " hora" : " horas") + " e "
+						+ minutosRestantes + " minutos";
+			}
+		}
 
 		LocalDateTime tempoPrevistoChegada = corrida.getHorario().plusMinutes(tempoDeViagemMinutos);
 
 		return new CalculoTempoCorridaDTO(corrida.getOrigem(), corrida.getDestino(),
-				tempoDeViagemHoras, tempoPrevistoChegada);
+				tempoDeViagemFormatado, tempoPrevistoChegada);
 	}
 }
