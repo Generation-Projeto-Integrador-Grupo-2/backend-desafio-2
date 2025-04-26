@@ -37,7 +37,7 @@ public class Usuario {
     private String foto;
 
     @Enumerated(EnumType.STRING)
-    private TipoUsuario tipo;
+    private TipoUsuario tipo = TipoUsuario.PASSAGEIRO;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Motorista motorista;

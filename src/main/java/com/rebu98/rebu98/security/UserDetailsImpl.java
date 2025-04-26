@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.rebu98.rebu98.model.TipoUsuario;
 import com.rebu98.rebu98.model.Usuario;
 
 public class UserDetailsImpl implements UserDetails {
@@ -19,6 +20,9 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(Usuario user) {
         this.userName = user.getEmail();
         this.password = user.getSenha();
+        if (user.getTipo() == null) {
+            user.setTipo(TipoUsuario.PASSAGEIRO); // Ou outro tipo padrão
+        }
         this.authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getTipo().name()));
     }
 

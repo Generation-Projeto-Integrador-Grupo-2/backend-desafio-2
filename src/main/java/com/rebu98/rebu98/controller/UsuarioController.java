@@ -33,7 +33,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listarTodos());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Usuario> getById(@PathVariable Long id) {
         return usuarioService.buscarPorId(id).map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
