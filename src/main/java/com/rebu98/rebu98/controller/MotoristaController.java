@@ -1,26 +1,22 @@
 package com.rebu98.rebu98.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.rebu98.rebu98.model.Motorista;
-import com.rebu98.rebu98.repository.MotoristaRepository;
+import com.rebu98.rebu98.service.MotoristaService;
 
 import jakarta.validation.Valid;
 
@@ -31,56 +27,50 @@ import jakarta.validation.Valid;
 public class MotoristaController {
 
 	@Autowired
-	private MotoristaRepository motoristaRepository;
+	private MotoristaService motoristaService;
 
 	@GetMapping
 	public ResponseEntity<List<Motorista>> getAll() {
-		return ResponseEntity.ok(motoristaRepository.findAll());
+		return ResponseEntity.ok(motoristaService.listarMotoristas());
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Motorista> getById(@PathVariable Long id) {
-		return motoristaRepository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
+		return motoristaService.buscarPorId(id).map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
 	@GetMapping("/cnh/{cnh}")
-	public ResponseEntity<List<Motorista>> getByCnh(@PathVariable String cnh) {
-		return ResponseEntity.ok(motoristaRepository.findAllByCnhContainingIgnoreCase(cnh));
-	}
+	public ResponseEntity<Motorista> getByCnh(@PathVariable String cnh) {
+		return motoristaService.buscarPorCnh(cnh).map(resposta -> ResponseEntity.ok(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+	}  
 
 	@GetMapping("/modeloCarro/{modeloCarro}")
-	public ResponseEntity<List<Motorista>> getBymodeloCarro(@PathVariable String modeloCarro) {
-		return ResponseEntity
-				.ok(motoristaRepository.findAllBymodeloCarroContainingIgnoreCase(modeloCarro));
+	public ResponseEntity<List<Motorista>> getByModeloCarro(@PathVariable String modeloCarro) {
+		return motoristaService.buscarPorModeloCarro(modeloCarro).map(resposta -> ResponseEntity.ok(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build()); 		 
 	}
 
 	@GetMapping("/placa/{placa}")
-	public ResponseEntity<List<Motorista>> getByPlaca(@PathVariable String placa) {
-		return ResponseEntity.ok(motoristaRepository.findAllByPlacaContainingIgnoreCase(placa));
+	public ResponseEntity<Motorista> getByPlaca(@PathVariable String placa) {
+		return motoristaService.buscarPorPlaca(placa).map(resposta -> ResponseEntity.ok(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build()); 
 	}
 
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Motorista> post(@Valid @RequestBody Motorista motorista) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(motoristaRepository.save(motorista));
+		return ResponseEntity.status(HttpStatus.CREATED).body(motoristaService.cadastrarMotorista(motorista));
 	}
 
 	@PutMapping("/atualizar")
 	public ResponseEntity<Motorista> put(@Valid @RequestBody Motorista motorista) {
-		return motoristaRepository.findById(motorista.getId())
-				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED)
-						.body(motoristaRepository.save(motorista)))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+		return motoristaService.atualizarMotorista(motorista)
+				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());  
 	}
 
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Long id) {
-		Optional<Motorista> motorista = motoristaRepository.findById(id);
-
-		if (motorista.isEmpty())
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-		motoristaRepository.deleteById(id);
+	public void deletarMotorista(Long id) {
+		motoristaService.delete(id);
 	}
 }

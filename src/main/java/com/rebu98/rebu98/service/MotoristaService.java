@@ -1,10 +1,13 @@
 package com.rebu98.rebu98.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.rebu98.rebu98.model.Motorista;
 import com.rebu98.rebu98.model.TipoUsuario;
@@ -29,7 +32,21 @@ public class MotoristaService {
 
 		return motoristaRepository.save(motorista);
 	}
-
+	public Optional<Motorista> buscarPorId(Long id) {
+		return motoristaRepository.findById(id);
+	} 
+	public List<Motorista> listarMotoristas() {
+		return motoristaRepository.findAll();
+	} 
+	public Optional<Motorista> buscarPorCnh(String cnh) {
+		return motoristaRepository.findAllByCnhContainingIgnoreCase(cnh);
+	}
+	public Optional<List<Motorista>> buscarPorModeloCarro(String modeloCarro) {
+		return motoristaRepository.findAllByModeloCarroContainingIgnoreCase(modeloCarro);  
+	} 
+	public Optional<Motorista> buscarPorPlaca(String placa) {
+		return motoristaRepository.findAllByPlacaContainingIgnoreCase(placa);  
+	}
 	public Optional<Motorista> atualizarMotorista(Motorista motorista) {
 		Optional<Motorista> motoristaAtualizado = motoristaRepository.findById(motorista.getId());
 
@@ -45,10 +62,17 @@ public class MotoristaService {
 				usuarioRepository.save(usuario);
 			}
 
-			return Optional.ofNullable(motoristaRepository.save(m));
+			return Optional.ofNullable(motoristaRepository.save(motorista));
 		}
 
 		return Optional.empty();
 	}
-}
+	public void delete(@PathVariable Long id) {
+		Optional<Motorista> motorista = motoristaRepository.findById(id);
 
+		if (motorista.isEmpty())
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+		motoristaRepository.deleteAll();
+	}
+}
