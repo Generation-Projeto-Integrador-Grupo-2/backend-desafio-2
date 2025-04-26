@@ -23,7 +23,6 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/motorista")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@PreAuthorize("hasRole('MOTORISTA')")
 public class MotoristaController {
 
 	@Autowired
@@ -44,32 +43,36 @@ public class MotoristaController {
 	public ResponseEntity<Motorista> getByCnh(@PathVariable String cnh) {
 		return motoristaService.buscarPorCnh(cnh).map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-	}  
+	}
 
 	@GetMapping("/modeloCarro/{modeloCarro}")
 	public ResponseEntity<List<Motorista>> getByModeloCarro(@PathVariable String modeloCarro) {
-		return motoristaService.buscarPorModeloCarro(modeloCarro).map(resposta -> ResponseEntity.ok(resposta))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build()); 		 
+		return motoristaService.buscarPorModeloCarro(modeloCarro)
+				.map(resposta -> ResponseEntity.ok(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
 	@GetMapping("/placa/{placa}")
 	public ResponseEntity<Motorista> getByPlaca(@PathVariable String placa) {
 		return motoristaService.buscarPorPlaca(placa).map(resposta -> ResponseEntity.ok(resposta))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build()); 
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Motorista> post(@Valid @RequestBody Motorista motorista) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(motoristaService.cadastrarMotorista(motorista));
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(motoristaService.cadastrarMotorista(motorista));
 	}
 
+	@PreAuthorize("hasRole('MOTORISTA')")
 	@PutMapping("/atualizar")
 	public ResponseEntity<Motorista> put(@Valid @RequestBody Motorista motorista) {
 		return motoristaService.atualizarMotorista(motorista)
 				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());  
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
+	@PreAuthorize("hasRole('MOTORISTA')")
 	public void deletarMotorista(Long id) {
 		motoristaService.delete(id);
 	}
