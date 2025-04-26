@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
-
+import com.rebu98.rebu98.dto.MotoristaRequestDTO;
 import com.rebu98.rebu98.model.Motorista;
 import com.rebu98.rebu98.model.TipoUsuario;
 import com.rebu98.rebu98.model.Usuario;
@@ -24,19 +24,23 @@ public class MotoristaService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	public Motorista cadastrarMotorista(Motorista motorista) {
+	public Motorista cadastrarMotorista(MotoristaRequestDTO motoristaRequest) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
 		return usuarioRepository.findByEmail(email).map(usuario -> {
 			usuario.setTipo(TipoUsuario.MOTORISTA);
 			usuarioRepository.save(usuario);
 
+			Motorista motorista = new Motorista();
+			motorista.setCnh(motoristaRequest.cnh());
+			motorista.setModeloCarro(motoristaRequest.modeloCarro());
+			motorista.setPlaca(motoristaRequest.placa());
 			motorista.setUsuario(usuario);
+
 			return motoristaRepository.save(motorista);
 		}).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 	}
-
 
 	public Optional<Motorista> buscarPorId(Long id) {
 		return motoristaRepository.findById(id);

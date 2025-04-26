@@ -50,11 +50,11 @@ public class Corrida {
 	private double distanciaKm;
 
 	@ManyToOne
-	@JsonIgnoreProperties("corridasComoPassageiro")
+	@JsonIgnoreProperties({"corridasComoPassageiro", "motorista"})
 	private Usuario usuario;
 
 	@ManyToOne
-	@JsonIgnoreProperties("motorista")
+	@JsonIgnoreProperties("corridas")
 	private Motorista motorista;
 
 	public Long getId() {
