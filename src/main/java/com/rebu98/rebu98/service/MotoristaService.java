@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,14 +25,18 @@ public class MotoristaService {
 	private UsuarioRepository usuarioRepository;
 
 	public Motorista cadastrarMotorista(Motorista motorista) {
-		return usuarioRepository.findById(motorista.getId()).map(usuario -> {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		return usuarioRepository.findByEmail(email).map(usuario -> {
 			usuario.setTipo(TipoUsuario.MOTORISTA);
 			usuarioRepository.save(usuario);
 
+			motorista.setUsuario(usuario);
 			return motoristaRepository.save(motorista);
 		}).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 	}
+
 
 	public Optional<Motorista> buscarPorId(Long id) {
 		return motoristaRepository.findById(id);
