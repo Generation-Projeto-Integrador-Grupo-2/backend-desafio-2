@@ -40,12 +40,12 @@ public class CorridaController {
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
-	@GetMapping("/usuario/{usuarioid}")
+	@GetMapping("/usuario/{usuarioId}")
 	public ResponseEntity<List<Corrida>> buscarCorridasPorUsuario(@PathVariable Long usuarioId) {
 		return ResponseEntity.ok(corridaService.buscarCorridasPorUsuario(usuarioId));
 	}
 
-	@GetMapping("/motorista/{motoristaid}")
+	@GetMapping("/motorista/{motoristaId}")
 	public ResponseEntity<List<Corrida>> buscarCorridasPorMotorista(
 			@PathVariable Long motoristaId) {
 		return ResponseEntity.ok(corridaService.buscarCorridasPorMotorista(motoristaId));

@@ -60,12 +60,12 @@ public class MotoristaController {
 		return ResponseEntity.ok(motoristaRepository.findAllByPlacaContainingIgnoreCase(placa));
 	}
 
-	@PostMapping
+	@PostMapping("/cadastrar")
 	public ResponseEntity<Motorista> post(@Valid @RequestBody Motorista motorista) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(motoristaRepository.save(motorista));
 	}
 
-	@PutMapping
+	@PutMapping("/atualizar")
 	public ResponseEntity<Motorista> put(@Valid @RequestBody Motorista motorista) {
 		return motoristaRepository.findById(motorista.getId())
 				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED)
