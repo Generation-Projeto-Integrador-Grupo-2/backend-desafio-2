@@ -24,29 +24,35 @@ public class MotoristaService {
 	private UsuarioRepository usuarioRepository;
 
 	public Motorista cadastrarMotorista(Motorista motorista) {
-		Usuario usuario = motorista.getUsuario();
-		if (usuario != null) {
+		return usuarioRepository.findById(motorista.getId()).map(usuario -> {
 			usuario.setTipo(TipoUsuario.MOTORISTA);
 			usuarioRepository.save(usuario);
-		}
 
-		return motoristaRepository.save(motorista);
+			return motoristaRepository.save(motorista);
+		}).orElseThrow(
+				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 	}
+
 	public Optional<Motorista> buscarPorId(Long id) {
 		return motoristaRepository.findById(id);
-	} 
+	}
+
 	public List<Motorista> listarMotoristas() {
 		return motoristaRepository.findAll();
-	} 
+	}
+
 	public Optional<Motorista> buscarPorCnh(String cnh) {
 		return motoristaRepository.findAllByCnhContainingIgnoreCase(cnh);
 	}
+
 	public Optional<List<Motorista>> buscarPorModeloCarro(String modeloCarro) {
-		return motoristaRepository.findAllByModeloCarroContainingIgnoreCase(modeloCarro);  
-	} 
-	public Optional<Motorista> buscarPorPlaca(String placa) {
-		return motoristaRepository.findAllByPlacaContainingIgnoreCase(placa);  
+		return motoristaRepository.findAllByModeloCarroContainingIgnoreCase(modeloCarro);
 	}
+
+	public Optional<Motorista> buscarPorPlaca(String placa) {
+		return motoristaRepository.findAllByPlacaContainingIgnoreCase(placa);
+	}
+
 	public Optional<Motorista> atualizarMotorista(Motorista motorista) {
 		Optional<Motorista> motoristaAtualizado = motoristaRepository.findById(motorista.getId());
 
@@ -67,6 +73,7 @@ public class MotoristaService {
 
 		return Optional.empty();
 	}
+
 	public void delete(@PathVariable Long id) {
 		Optional<Motorista> motorista = motoristaRepository.findById(id);
 
