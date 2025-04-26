@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.rebu98.rebu98.dto.MotoristaRequestDTO;
 import com.rebu98.rebu98.model.Motorista;
 import com.rebu98.rebu98.service.MotoristaService;
 
@@ -62,7 +62,7 @@ public class MotoristaController {
 	}
 
 	@PostMapping("/cadastrar")
-	public ResponseEntity<Motorista> post(@Valid @RequestBody Motorista motorista) {
+	public ResponseEntity<Motorista> post(@Valid @RequestBody MotoristaRequestDTO motorista) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(motoristaService.cadastrarMotorista(motorista));
 	}
