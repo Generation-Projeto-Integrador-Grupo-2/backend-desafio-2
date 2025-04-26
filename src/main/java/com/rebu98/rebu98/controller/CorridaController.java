@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.server.ResponseStatusException;
+import com.rebu98.rebu98.dto.CalculoTempoCorridaDTO;
 import com.rebu98.rebu98.model.Corrida;
 import com.rebu98.rebu98.service.CorridaService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/corridas")
@@ -68,6 +71,14 @@ public class CorridaController {
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
 		corridaService.deletarCorrida(id);
+	}
+
+	@GetMapping("/tempo")
+	public ResponseEntity<CalculoTempoCorridaDTO> getTempo(@RequestBody Corrida corrida) {
+		return corridaService.buscarPorId(corrida.getId())
+				.map(reposta -> ResponseEntity.ok(corridaService.calcularTempoCorrida(corrida)))
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+						"Corrida not found"));
 	}
 
 }

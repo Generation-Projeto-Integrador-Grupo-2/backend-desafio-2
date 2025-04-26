@@ -1,11 +1,13 @@
 package com.rebu98.rebu98.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.rebu98.rebu98.dto.CalculoTempoCorridaDTO;
 import com.rebu98.rebu98.model.Corrida;
 import com.rebu98.rebu98.repository.CorridaRepository;
 
@@ -57,4 +59,15 @@ public class CorridaService {
 		corridaRepository.deleteById(id);
 	}
 
+	public CalculoTempoCorridaDTO calcularTempoCorrida(Corrida corrida) {
+
+		double tempoDeViagemHoras = corrida.getDistanciaKm() / corrida.getVelocidadeMedia();
+
+		long tempoDeViagemMinutos = (long) (tempoDeViagemHoras * 60);
+
+		LocalDateTime tempoPrevistoChegada = corrida.getHorario().plusMinutes(tempoDeViagemMinutos);
+
+		return new CalculoTempoCorridaDTO(corrida.getOrigem(), corrida.getDestino(),
+				tempoDeViagemHoras, tempoPrevistoChegada);
+	}
 }
