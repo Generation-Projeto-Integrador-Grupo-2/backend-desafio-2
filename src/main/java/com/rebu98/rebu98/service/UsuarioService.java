@@ -71,8 +71,10 @@ public class UsuarioService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado!");
         }
 
-        if (!usuario.getSenha().equals(existente.get().getSenha())) {
+        if (!passwordEncoder.matches(usuario.getSenha(), existente.get().getSenha())) {
             usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        } else {
+            usuario.setSenha(existente.get().getSenha());
         }
 
         return Optional.of(usuarioRepository.save(usuario));

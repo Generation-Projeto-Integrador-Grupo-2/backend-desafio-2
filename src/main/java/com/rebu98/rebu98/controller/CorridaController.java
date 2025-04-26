@@ -51,13 +51,13 @@ public class CorridaController {
 		return ResponseEntity.ok(corridaService.buscarCorridasPorMotorista(motoristaId));
 	}
 
-	@PostMapping
+	@PostMapping("/cadastrar")
 	public ResponseEntity<Corrida> post(@Valid @RequestBody Corrida corrida) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(corridaService.cadastrarCorrida(corrida));
 	}
 
-	@PutMapping
+	@PutMapping("/atualizar")
 	public ResponseEntity<Corrida> put(@Valid @RequestBody Corrida corrida) {
 		return corridaService.atualizarCorrida(corrida)
 				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
