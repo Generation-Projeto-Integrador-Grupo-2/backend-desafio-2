@@ -5,10 +5,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import com.rebu98.rebu98.dto.CalculoTempoCorridaDTO;
 import com.rebu98.rebu98.model.Corrida;
+import com.rebu98.rebu98.model.Usuario;
 import com.rebu98.rebu98.repository.CorridaRepository;
+import com.rebu98.rebu98.repository.UsuarioRepository;
 
 @Service
 public class CorridaService {
@@ -16,8 +21,17 @@ public class CorridaService {
 	@Autowired
 	private CorridaRepository corridaRepository;
 
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+
 	public Corrida cadastrarCorrida(Corrida corrida) {
-		return corridaRepository.save(corrida);
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		return usuarioRepository.findByEmail(email).map(usuario -> {
+			corrida.setUsuario(usuario);
+			return corridaRepository.save(corrida);
+		}).orElseThrow(
+				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 	}
 
 	public Optional<Corrida> buscarPorId(Long id) {
@@ -37,21 +51,22 @@ public class CorridaService {
 	}
 
 	public Optional<Corrida> atualizarCorrida(Corrida corrida) {
-		Optional<Corrida> corridaExistente = corridaRepository.findById(corrida.getId());
-		if (corridaExistente.isPresent()) {
-			Corrida novaCorrida = corridaExistente.get();
-			novaCorrida.setOrigem(corrida.getOrigem());
-			novaCorrida.setDestino(corrida.getDestino());
-			novaCorrida.setPreco(corrida.getPreco());
-			novaCorrida.setVelocidadeMedia(corrida.getVelocidadeMedia());
-			novaCorrida.setDistanciaKm(corrida.getDistanciaKm());
-			novaCorrida.setUsuario(corrida.getUsuario());
-			novaCorrida.setMotorista(corrida.getMotorista());
+		return corridaRepository.findById(corrida.getId()).flatMap(corridaExistente -> {
+			corridaExistente.setOrigem(corrida.getOrigem());
+			corridaExistente.setDestino(corrida.getDestino());
+			corridaExistente.setPreco(corrida.getPreco());
+			corridaExistente.setVelocidadeMedia(corrida.getVelocidadeMedia());
+			corridaExistente.setDistanciaKm(corrida.getDistanciaKm());
 
-			return Optional.of(corridaRepository.save(novaCorrida));
-		}
+			String email = SecurityContextHolder.getContext().getAuthentication().getName();
+			Usuario usuario = usuarioRepository.findByEmail(email)
+					.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+							"Usuário não encontrado"));
 
-		return Optional.empty();
+			corridaExistente.setUsuario(usuario);
+
+			return Optional.of(corridaRepository.save(corridaExistente));
+		});
 	}
 
 	public void deletarCorrida(Long id) {
