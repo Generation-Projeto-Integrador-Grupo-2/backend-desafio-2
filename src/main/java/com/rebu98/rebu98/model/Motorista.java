@@ -36,7 +36,7 @@ public class Motorista {
 	private String placa;
 
 	@OneToOne
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "usuario_id", unique = true)
 	private Usuario usuario;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "motorista", cascade = CascadeType.REMOVE)

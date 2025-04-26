@@ -28,6 +28,12 @@ public class MotoristaService {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
 		return usuarioRepository.findByEmail(email).map(usuario -> {
+
+			if (usuario.getMotorista() != null) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+						"Usuário já é motorista!");
+			}
+
 			usuario.setTipo(TipoUsuario.MOTORISTA);
 			usuarioRepository.save(usuario);
 
