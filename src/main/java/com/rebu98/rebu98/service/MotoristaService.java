@@ -12,7 +12,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.rebu98.rebu98.dto.MotoristaRequestDTO;
 import com.rebu98.rebu98.model.Motorista;
 import com.rebu98.rebu98.model.TipoUsuario;
-import com.rebu98.rebu98.model.Usuario;
 import com.rebu98.rebu98.repository.MotoristaRepository;
 import com.rebu98.rebu98.repository.UsuarioRepository;
 
