@@ -68,25 +68,25 @@ public class MotoristaService {
 		return motoristaRepository.findAllByPlacaContainingIgnoreCase(placa);
 	}
 
-	public Optional<Motorista> atualizarMotorista(Motorista motorista) {
-		Optional<Motorista> motoristaAtualizado = motoristaRepository.findById(motorista.getId());
+	public Optional<Motorista> atualizarMotorista(MotoristaRequestDTO motoristaRequest) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		if (motoristaAtualizado.isPresent()) {
-			Motorista m = motoristaAtualizado.get();
-			m.setCnh(motorista.getCnh());
-			m.setModeloCarro(motorista.getModeloCarro());
-			m.setPlaca(motorista.getPlaca());
-
-			Usuario usuario = m.getUsuario();
-			if (usuario != null) {
-				usuario.setTipo(TipoUsuario.MOTORISTA);
-				usuarioRepository.save(usuario);
+		return usuarioRepository.findByEmail(email).flatMap(usuario -> {
+			if (usuario.getMotorista() == null) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+						"Usuário não é um motorista cadastrado!");
 			}
 
-			return Optional.ofNullable(motoristaRepository.save(motorista));
-		}
+			Motorista motorista = usuario.getMotorista();
+			motorista.setCnh(motoristaRequest.cnh());
+			motorista.setModeloCarro(motoristaRequest.modeloCarro());
+			motorista.setPlaca(motoristaRequest.placa());
 
-		return Optional.empty();
+			usuario.setTipo(TipoUsuario.MOTORISTA);
+			usuarioRepository.save(usuario);
+
+			return Optional.of(motoristaRepository.save(motorista));
+		});
 	}
 
 	public void delete(@PathVariable Long id) {

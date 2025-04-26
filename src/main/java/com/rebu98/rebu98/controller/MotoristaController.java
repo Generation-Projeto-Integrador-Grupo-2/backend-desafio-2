@@ -68,7 +68,7 @@ public class MotoristaController {
 
 	@PreAuthorize("hasRole('MOTORISTA')")
 	@PutMapping("/atualizar")
-	public ResponseEntity<Motorista> put(@Valid @RequestBody Motorista motorista) {
+	public ResponseEntity<Motorista> put(@Valid @RequestBody MotoristaRequestDTO motorista) {
 		return motoristaService.atualizarMotorista(motorista)
 				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
