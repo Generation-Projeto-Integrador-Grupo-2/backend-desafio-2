@@ -78,4 +78,9 @@ public class CorridaController {
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
 						"Corrida não encontrada"));
 	}
+
+	@PutMapping("/aceitar/{id}")
+	public ResponseEntity<Corrida> aceitarCorrida(@PathVariable Long id) {
+		return ResponseEntity.ok(corridaService.motoristaAceitarCorrida(id));
+	}
 }

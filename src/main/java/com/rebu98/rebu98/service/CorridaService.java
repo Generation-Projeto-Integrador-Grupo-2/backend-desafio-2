@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import com.rebu98.rebu98.dto.CalculoTempoCorridaDTO;
 import com.rebu98.rebu98.model.Corrida;
+import com.rebu98.rebu98.model.TipoUsuario;
 import com.rebu98.rebu98.model.Usuario;
 import com.rebu98.rebu98.repository.CorridaRepository;
 import com.rebu98.rebu98.repository.UsuarioRepository;
@@ -28,11 +29,19 @@ public class CorridaService {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
 		return usuarioRepository.findByEmail(email).map(usuario -> {
+
+			if (usuario.getTipo() != TipoUsuario.PASSAGEIRO) {
+				throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+						"Apenas passageiros podem criar corridas.");
+			}
+
 			corrida.setUsuario(usuario);
 			return corridaRepository.save(corrida);
+
 		}).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 	}
+
 
 	public Optional<Corrida> buscarPorId(Long id) {
 		return corridaRepository.findById(id);
@@ -99,4 +108,29 @@ public class CorridaService {
 		return new CalculoTempoCorridaDTO(corrida.getOrigem(), corrida.getDestino(),
 				tempoDeViagemFormatado, tempoPrevistoChegada);
 	}
+
+	public Corrida motoristaAceitarCorrida(Long corridaId) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		Usuario motorista = usuarioRepository.findByEmail(email).orElseThrow(
+				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+		if (motorista.getTipo() != TipoUsuario.MOTORISTA) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+					"Apenas motoristas podem aceitar corridas.");
+		}
+
+		Corrida corrida = corridaRepository.findById(corridaId).orElseThrow(
+				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Corrida não encontrada."));
+
+		if (corrida.getMotorista() != null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"Essa corrida já foi aceita por outro motorista.");
+		}
+
+		corrida.setMotorista(motorista.getMotorista());
+
+		return corridaRepository.save(corrida);
+	}
+
 }
