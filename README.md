@@ -99,3 +99,8 @@ O **rebU98** é um aplicativo inovador que conecta motoristas e passageiros de f
 🗑️ Deletar corrida  
 
 ---
+# 🎨✨ Diagrama ✨🎨
+
+<@717140912802758656> <@775940719411462184>
+
+✨ Obrigado por visitar! ✨
