@@ -118,8 +118,3 @@
 
 </body>
 </html>
-
-Atualizar corrida
-
-Deletar corrida
-
