@@ -75,10 +75,10 @@
     <li>destino</li>
     <li>preco</li>
     <li>horario</li>
-    <li>distancia</li>
+    <li>distanciaKm</li>
     <li>motorista (associação com Motorista)</li>
     <li>usuario (associação com Usuario)</li>
-    <li>velocidade</li>
+    <li>velocidadeMedia</li>
 </ul>
 
 <h2>Funcionalidades Principais (CRUD)</h2>
