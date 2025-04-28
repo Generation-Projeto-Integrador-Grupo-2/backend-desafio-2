@@ -5,10 +5,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
+import com.rebu98.rebu98.dto.UsuarioRequestDTO;
 import com.rebu98.rebu98.model.Usuario;
 import com.rebu98.rebu98.model.UsuarioLogin;
 import com.rebu98.rebu98.repository.UsuarioRepository;
@@ -64,20 +65,23 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
-    public Optional<Usuario> atualizarUsuario(Usuario usuario) {
-        Optional<Usuario> existente = usuarioRepository.findById(usuario.getId());
+    public Optional<Usuario> atualizarUsuario(UsuarioRequestDTO usuarioRequest) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (existente.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado!");
-        }
+        return usuarioRepository.findByEmail(email).map(usuario -> {
+            usuario.setNome(usuarioRequest.nome());
+            usuario.setFoto(usuarioRequest.foto());
 
-        if (!passwordEncoder.matches(usuario.getSenha(), existente.get().getSenha())) {
-            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        } else {
-            usuario.setSenha(existente.get().getSenha());
-        }
+            if (!usuario.getEmail().equals(usuarioRequest.email())) {
+                usuario.setEmail(usuarioRequest.email());
+            }
 
-        return Optional.of(usuarioRepository.save(usuario));
+            if (!passwordEncoder.matches(usuarioRequest.senha(), usuario.getSenha())) {
+                usuario.setSenha(passwordEncoder.encode(usuarioRequest.senha()));
+            }
+
+            return usuarioRepository.save(usuario);
+        });
     }
 
     public void deletarUsuario(Long id) {

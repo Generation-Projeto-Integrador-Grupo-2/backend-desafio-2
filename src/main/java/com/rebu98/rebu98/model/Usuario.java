@@ -1,8 +1,8 @@
 package com.rebu98.rebu98.model;
 
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -42,7 +42,7 @@ public class Usuario {
     private TipoUsuario tipo = TipoUsuario.PASSAGEIRO;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonManagedReference
     private Motorista motorista;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)

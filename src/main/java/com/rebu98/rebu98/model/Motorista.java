@@ -1,7 +1,7 @@
 package com.rebu98.rebu98.model;
 
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,6 +37,7 @@ public class Motorista {
 
 	@OneToOne
 	@JoinColumn(name = "usuario_id", unique = true)
+	@JsonBackReference
 	private Usuario usuario;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "motorista", cascade = CascadeType.REMOVE)

@@ -28,11 +28,11 @@ public class Corrida {
 	private Long id;
 
 	@NotBlank(message = "É obrigatório inserir a origem!")
-	@Size(min = 5, max = 100)
+	@Size(min = 2, max = 100)
 	private String origem;
 
 	@NotBlank(message = "É obrigatório inserir um destino!")
-	@Size(min = 5, max = 100)
+	@Size(min = 2, max = 100)
 	private String destino;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING)

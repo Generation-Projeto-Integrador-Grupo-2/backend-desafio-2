@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import com.rebu98.rebu98.dto.UsuarioRequestDTO;
 import com.rebu98.rebu98.model.Usuario;
 import com.rebu98.rebu98.model.UsuarioLogin;
 import com.rebu98.rebu98.service.UsuarioService;
@@ -55,7 +56,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/atualizar")
-    public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody UsuarioRequestDTO usuario) {
         return usuarioService.atualizarUsuario(usuario)
                 .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
