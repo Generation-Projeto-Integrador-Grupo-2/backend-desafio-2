@@ -14,6 +14,9 @@
     de maneira prática e intuitiva. A plataforma é responsiva e foi pensada para proporcionar uma experiência eficiente
     para motoristas e usuários que desejam oferecer ou buscar caronas.
 </p>
+<div style="text-align: center;">
+  <img src="https://i0.wp.com/maracujaroxo.com/wp-content/uploads/2017/06/gif-carona-viajar-sem-dinheiro.gif?ssl=1" alt="Gif de Carona" width="380">
+</div>
 
 <h2>Integrantes</h2>
 <ul>
