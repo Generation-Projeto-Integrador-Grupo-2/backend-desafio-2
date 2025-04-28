@@ -1,8 +1,11 @@
 rebU98 - Aplicativo de Caronas
+
 Descrição
+
 O rebU98 é um aplicativo de caronas desenvolvido para facilitar a oferta e a busca de corridas de maneira prática e intuitiva. A plataforma é responsiva e foi pensada para proporcionar uma experiência eficiente para motoristas e usuários que desejam oferecer ou buscar caronas.
 
 Integrantes
+
 Guilherme Lima
 
 Maria de Fátima
@@ -16,7 +19,9 @@ Laura Nery
 Luana Cardoso
 
 Tecnologias Utilizadas
+
 Backend
+
 Spring Boot
 
 Spring Boot Web
@@ -37,7 +42,9 @@ Banco de Dados
 MySQL
 
 Entidades e Atributos
+
 Usuário (Usuario)
+
 nome
 
 email
@@ -53,6 +60,7 @@ motorista (associação com Motorista)
 listaCorridas (corridas associadas)
 
 Motorista (Motorista)
+
 carro
 
 cnh
@@ -64,6 +72,7 @@ usuario (associação com Usuario)
 listaCorridas (corridas associadas)
 
 Corrida (Corrida)
+
 origem
 
 destino
@@ -81,7 +90,9 @@ usuario (associação com Usuario)
 velocidade
 
 Funcionalidades Principais (CRUD)
+
 Usuário
+
 Cadastrar novo usuário
 
 Login de usuário
@@ -95,6 +106,7 @@ Atualizar dados do usuário
 Deletar usuário
 
 Motorista
+
 Cadastrar motorista
 
 Listar todos os motoristas
@@ -112,6 +124,7 @@ Atualizar motorista
 Deletar motorista
 
 Corrida
+
 Cadastrar corrida
 
 Calcular tempo de corrida
