@@ -23,7 +23,7 @@
     <li>Guilherme Lima</li>
     <li>Maria de Fátima</li>
     <li>Leonardo de Paula</li>
-    <li>Caio Silva</li>
+    <li>Caio Nascimento</li>
     <li>Laura Nery</li>
     <li>Luana Cardoso</li>
 </ul>
