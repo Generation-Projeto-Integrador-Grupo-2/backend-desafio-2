@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    #rebU98 - Aplicativo de Caronas</title>
+    <title>rebU98 - Aplicativo de Caronas</title>
 </head>
 <body>
 
