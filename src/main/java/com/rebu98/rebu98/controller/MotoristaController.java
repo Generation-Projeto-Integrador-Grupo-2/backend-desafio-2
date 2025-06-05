@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,7 +65,6 @@ public class MotoristaController {
 				.body(motoristaService.cadastrarMotorista(motorista));
 	}
 
-	@PreAuthorize("hasRole('MOTORISTA')")
 	@PutMapping("/atualizar")
 	public ResponseEntity<Motorista> put(@Valid @RequestBody MotoristaRequestDTO motorista) {
 		return motoristaService.atualizarMotorista(motorista)
@@ -74,7 +72,6 @@ public class MotoristaController {
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
-	@PreAuthorize("hasRole('MOTORISTA')")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deletarMotorista(@PathVariable Long id) {
